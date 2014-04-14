@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h1 style="margin-left:10%;margin-top:0px;">Welcome</h1>
+<section>
+    <div class="half">
+        <h2>Create robot</h2>
+        <p>Choose a robot Python file to upload.</p>
+        <p class="info">The name of your robot will be the same as the filename. For example, the file 'fred.py' will produce a robot called 'fred'. Robot names need to be unique.</p>
+        <button id="new_robot" class="add">Add robot</button>
+        <form enctype="multipart/form-data" class="hidden">
+            <input name="robot_file" type="file" class="hidden" id="robot_file" />
+        </form> 
+        
+        <hr />
+        
+        <h2>Your robots</h2>
+        {% if robot_count == 0 %}
+            <p class="info">You don't have any robots yet!</p>   
+        {% else %}
+            <ul id="robot_list" class="robot_list">
+            {% for robot in robots %}
+                <li data-status="{{ robot['status'] }}" data-id="{{ robot['robot_id'] }}">
+                    <p class="title">{{ robot['robot_name'] }}</p>
+                    {% if robot['status'] == 0 %}
+                        <p class="status untested">Not yet tested</p>
+                        <p class="info">Robots need to be tested to ensure that they will not cause errors when in battles.</p>
+                        <div class="alert"></div>
+                    {% elif robot['status'] == 1 %}
+                        <p class="status passed">Test passed</p>
+                        <p class="score">{{ robot['score'] }}</p>
+                    {% elif robot['status'] == -1 %}
+                        <p class="status failed">Test failed: invalid robot</p>
+                        <div class="alert"></div>
+                    {% endif %}
+                    <button onclick="window.location='/delete_robot?id={{ robot['robot_id'] }}';" class="delete">delete</button>
+                    <button onclick="window.location='/robot_source?id={{ robot['robot_id'] }}';" class="source">source</button>
+                    <button onclick="window.location='/test?id={{ robot['robot_id'] }}';" class="test">test</button>
+
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="half">
+        <h2>Battle</h2>
+        <p>Select your robot from the list to the left.</p>
+        {% if robot_count == 0 %}
+            <p class="error">You don't have any robots yet!</p>
+        {% else %}
+            {% if other_count == 0 %}
+                <p class="error">At the moment, there are no other robots to fight.</p>
+            {% else %}
+                <p>Enter another robot's name below to battle that robot!</p>
+                <p class="hidden error" id="robot_error">You do not have any <i>valid</i> robots.</p>
+                <input type="text" id="robot_name" />
+                <ul class="robot_list" id="search_result"></ul>    
+            {% endif %}
+        {% endif %}
+    </div>
+    
+    <div class="clear"></div>
+ 
+{% endblock %}
+{% block scripts %}
+<script>
+    var robot_ids = [{% for robot in others %}'{{ robot['robot_id'] }}',{% endfor %}];
+    var robot_names = [{% for robot in others %}'{{ robot['robot_name'] }}',{% endfor %}];
+
+    /* 
+     * Handle file upload 
+     *
+    */
+    $("#new_robot").click(function(event){
+        event.stopImmediatePropagation();
+        $("#robot_file").trigger("click");
+    });
+    $('#robot_file').fileupload({
+        url: '/upload_robot',
+        dataType: 'json',
+        done: function (e, data) {
+            window.location = "/";
+        },
+        progressall: function (e, data) {
+        }
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled'); 
+
+    /*
+     * Handle detection of valid robot
+     *
+    */
+    var found = false;
+    $("#robot_list li").each(function(){
+        if($(this).attr("data-status") == 1){
+            if(found == false){
+                $(this).addClass("selected");
+                found = true;
+            }
+        }    
+    });
+    if(found == false){
+        $("#robot_error").removeClass("hidden");
+        $(".battle").addClass("hidden");
+        $("#robot_name").addClass("hidden");
+    }    
+    $("#robot_list li").click(function(){
+        if($(this).attr("data-status") == 1){
+            $("#robot_list li").removeClass("selected");
+            $(this).addClass("selected");
+        }
+    });
+
+    /*
+     * Handle searching for robots
+     *
+    */
+    $("#robot_name").keyup(function(){
+        var term = $(this).val().toLowerCase();
+        var list = $("#search_result");
+        list.html('');
+        if (term.length < 3){
+            return;
+        }        
+        var successes = [];
+        for(var i = 0; i < robot_names.length; i++){
+            var robot = robot_names[i].toLowerCase();
+            if(robot.indexOf(term) > -1){
+                successes.push(i);
+            }
+        }
+        for(var i =0; i < successes.length; i++){
+            var index = successes[i];
+            list.append('<li><p class="title">'+robot_names[index]+'</p><button class="battle" data-id="'+robot_ids[index]+'">Battle!</button></li>');
+        }
+        refresh_bindings();
+    });
+
+    function refresh_bindings(){
+        $(".battle").click(function(event){
+            event.stopImmediatePropagation();
+            var selected_id = null;
+            var this_id = $(this).attr("data-id");
+            $("#robot_list li").each(function(){
+                if($(this).hasClass("selected")){
+                    selected_id = $(this).attr("data-id");
+                }
+            });
+            if(selected_id == null){return;}
+            window.location = "/battle?id1="+selected_id+"&id2="+this_id;
+        });
+    }
+
+
+</script>
+{% endblock %}
+

@@ -1,0 +1,464 @@
+body,html{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+*{
+    font-family: 'Helvetica Neue', 'Helvetica', 'Sans-serif';
+}
+
+body{
+    background: rgba(0,0,0,0.05);
+}
+
+.centre{
+    text-align:center;
+}
+
+.large{
+    width: 100%;
+    display:block
+}
+
+.clear{
+    clear:both;
+}
+
+.hidden{
+    display:none;
+}
+
+#loading{
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:2000;
+    background-color:rgba(0,0,0,0.7);
+    background-image:url('/static/media/loading.gif');
+    background-repeat: no-repeat;
+    background-position:center center;
+}
+
+input{
+    border: 1px dotted rgba(0,0,0,0.7);
+    padding: 5px;
+    margin:10px 0px;
+    border-radius:2px;    
+    font-size:15px;
+    background-size:20px;
+    background-position: 2px center;
+    background-repeat:no-repeat;
+    width:80%;
+}
+input[type=password]{
+    background-image: url('/static/media/key.png');
+    padding-left: 25px;
+}
+input[type=email]{
+    background-image: url('/static/media/email.png');
+    padding-left:25px;
+    background-size:15px;
+}
+input.username{
+    background-image: url('/static/media/user.png');
+    padding-left:25px;
+    background-size:15px;
+}
+
+textarea.source{
+    display:block;
+    margin:0px;
+    padding:10px 2%;
+    width:96%;
+    font-size:15px;
+    font-family: 'Courier', 'Monospace';
+    min-height:400px;
+    background: rgba(0,0,0,0.7);
+    color:white;
+}
+
+button{
+    border:none;
+    background: #d4374a;
+    background: rgb(100,100,100);
+    background: rgb(0,0,50);
+    padding: 5px;
+    margin: 10px 0px;
+    color: white;
+    font-size: 16px;
+    text-transform:uppercase;
+    border-radius:4px;
+}
+button:hover{
+    opacity:0.7;
+}
+button.battle_play{
+    width:100%; 
+    display:block;
+}
+button.battle_step{
+    width:46%;
+    margin:0px 1%;
+    padding:5px 1%;
+    display:inline-block;
+}
+button.delete{
+    padding-left:30px;
+    background-image: url('/static/media/bin.png');
+    background-repeat:no-repeat;
+    background-size:18px;
+    background-position:4px center;
+    background-color:rgb(150,0,0);
+}
+button.add{
+    padding-left:30px;
+    background-image: url('/static/media/add.png');
+    background-repeat:no-repeat;
+    background-size:18px;
+    background-position:4px center;
+}
+button.source{
+    padding-left:30px;
+    background-image: url('/static/media/curlybrace.png');
+    background-repeat:no-repeat;
+    background-size:18px;
+    background-position:4px center;
+}
+button.test{
+    padding-left:30px;
+    background-image: url('/static/media/test.png');
+    background-repeat:no-repeat;
+    background-size:18px;
+    background-position:4px center;
+}
+button.battle{
+    padding-left:30px;
+    background-image: url('/static/media/swords2.png');
+    background-repeat:no-repeat;
+    background-size:18px;
+    background-position:4px center;
+    background-color:rgb(0,100,0);
+}
+
+h1{
+    font-weight:100;
+    font-size:35px;
+    color: rgba(0,0,0,0.5);
+    margin-left:10%;
+}
+
+h2{
+    font-weight:100;
+    color: #d4374a;
+    background-size:20px;
+    background-repeat:no-repeat;
+    background-position:left center;
+}
+h2.leaderboard{
+    padding-left:35px;
+    background-size:27px;
+    background-image: url('/static/media/medal.png');
+}
+h2.battle{
+    padding-left:35px;
+    background-image:url('/static/media/swords3.png');
+}
+
+p{
+    font-weight:200;
+}
+.info{
+    background-image:url('/static/media/info.png');
+    background-size:20px;
+    background-repeat:no-repeat;
+    background-position:4px 4px;
+    padding:5px;
+    padding-left:30px;
+    background-color:rgba(100,100,100, 0.3);
+    border-bottom:4px solid rgba(100,100,100,0.4);
+}
+p.error{
+    background-image:url('/static/media/error.png');
+    background-size:20px;
+    background-repeat:no-repeat;
+    background-position:4px center;
+    padding:5px;
+    padding-left:30px;
+    background-color:rgba(150,0,0, 0.3);
+    border-bottom:4px solid rgba(150,0,0,0.4);
+}
+p.status{
+    background-image:url('/static/media/flag.png');
+    background-size:20px;
+    background-repeat:no-repeat;
+    background-position:4px center;
+    padding:5px;
+    padding-left:30px;
+}
+p.status.untested{
+    color:rgba(255,128,0,1.0);
+}
+p.status.passed{
+    color:rgba(0,150,0,1.0);
+}
+p.status.failed{
+    color:rgba(200,0,0,1.0);
+}
+header{
+    display:block;
+    margin:0px 5%;
+    margin-bottom:40px;
+    padding-top:30px;
+}
+header #logo{
+    width:100px;
+    height: 100px;
+    display: inline-block;
+    margin-right: 20px;
+    background-image: url('/static/media/logo.jpg');
+    background-size: 100px 100px;
+    float:left;
+}
+header #cs_text{
+    display: inline-block;
+    font-size: 16px;
+    color:rgb(50,50,50);
+}
+header #cs_text span{
+    font-size: 20px;
+}
+header #cs_text span.robotathon{
+    text-transform:uppercase;
+    font-size:25px;
+    font-family: 'Share Tech Mono' ;
+}
+nav{
+    margin:0px auto;
+    display:inline-block;
+    vertical-align:middle;
+    height:50px;
+    text-align:right;
+    margin-right:10%;
+}
+nav a:link{
+    height:50px;    
+    width:40px;
+    display: inline-block;
+    margin:0px 10px;
+    color: rgba(0,0,0,0.4);
+    text-decoration:none;
+    border-radius:3px 3px 0px 0px;
+    background-position:center center;
+    background-size:36px;
+    background-repeat:no-repeat;
+}
+nav a.logout{
+    background-image:url('/static/media/logout.png');    
+    background-color:rgba(0,0,0,0.15);
+}
+nav a.dashboard{
+    background-image:url('/static/media/home.png');
+}
+nav a.battle{
+    background-image:url('/static/media/swords3.png');
+    background-size:25px;
+}
+
+nav a:hover{
+    background-color:rgba(0,0,0,0.1);
+}
+
+section{
+   width: 80%;
+   margin: 0px auto;
+   background: white;
+   padding:15px;
+   position:relative;
+} 
+
+div.half{
+    width: 45%;
+    margin: 10px 2%;
+    display: inline-block;
+    float:left;
+}
+
+ul.robot_list{
+    display:block;
+    margin:10px 0px;
+    padding:0px;
+}
+ul.robot_list li{
+    padding:0px;
+    padding-bottom:30px;
+    padding-top:30px;
+    border-bottom:1px dotted rgba(0,0,0,0.3);
+    margin:10px 0px;
+    display:block;
+    background-image:url('/static/media/robot.png');
+    background-size:100px;
+    background-repeat:no-repeat;
+    background-position:10px center;
+    background-color:rgba(0,0,0,0.1);
+    padding-left: 120px;
+    padding-right:10px;
+    min-height: 100px;
+    position:relative;
+}
+ul.robot_list li.selected{
+    background-color:rgba(0,100,0,0.8);
+    color:white;
+}
+ul.robot_list li .battle{
+    position:absolute;
+    top:0px;
+    right:8px;
+    font-size:14px;
+}
+ul.robot_list li .alert{
+    position:absolute;
+    top:-0px;
+    right:5px;
+    height:40px;
+    width:40px;
+    background-image:url('/static/media/alert.png');
+    background-size:cover;
+}
+ul.robot_list li.selected .status{
+    display:none;
+}
+ul.robot_list li .title{
+    font-family: 'Share Tech Mono' ;
+    font-size:large;
+}
+ul.robot_list li .score{
+    font-family: 'Share Tech Mono' ;
+    font-size:larger;
+    position: absolute;
+    top:-5px;
+    right:5px;
+}   
+
+
+.vs_box{
+    display:block;
+}
+.vs_box .robot{
+    margin:0px;
+    padding:0px;
+    background-size:100px;
+    background-repeat:no-repeat;
+    background-position:10px center;
+    background-image:url('/static/media/robot.png');
+    min-height:100px;
+    display:block;
+    margin:20px auto;
+    padding:10px;
+    padding-left:130px;
+    background-color:rgba(0,0,0,0.1);
+}
+.vs_box .robot .title{
+    font-family: 'Share Tech Mono' ;
+    font-size:25px;
+    margin:0px;
+}
+.vs_box .robot .owner{
+    margin:0px;
+}
+.vs_box .robot .score{
+    margin-top:10px;
+    display:block;
+    text-align:right;
+    font-size:60px;
+    font-weight:300;
+    margin:0px;
+    color:red;
+}
+.vs_box .robot .score.player2{
+    color:blue;
+}
+
+
+#map{
+    display:block;
+    margin:20px auto;
+    position:relative;
+}
+#map .tile{
+    width: 5%;
+    height: 5%;
+    border:1px solid rgba(0,0,0,0.7);
+    position:absolute;
+    z-index: 3;
+}
+#map .tile.spawn{
+    background:rgb(0,200,0);
+}
+#map .tile.obstacle{
+    background:rgb(150,150,150);
+}
+#map .robot{
+    width: 5%;
+    height: 5%;
+    color:white;
+    border-radius:50%;
+    position:absolute;
+    z-index: 4;
+    text-align:center;
+    font-size:12px;
+}
+#map .robot.player1{
+    background:red;
+}
+#map .robot.player2{
+    background:blue;
+}
+
+ul.battle_list{
+    margin:0px;
+    padding:0px;
+}
+ul.battle_list li{
+    display:block;
+    margin:10px 0px;
+    padding:10px;
+    border-bottom:1px dashed rgb(150,150,150);
+    background-color:rgba(0,0,0,0.05);
+    background-image:url('/static/media/swords.png');
+    background-size:40px;
+    background-repeat:no-repeat;
+    background-position:center center;
+}
+ul.battle_list li .entry{
+    display:inline-block;
+    width:49%;
+    float:left;
+}
+ul.battle_list li .entry .name{
+    font-family: 'Share Tech Mono' ;
+    font-size:20px;
+}
+ul.battle_list li .entry .owner{
+    font-size:15px;
+    color:rgb(100,100,100);
+}
+ul.battle_list li .entry .score{
+    display:block;
+    text-align:center;
+    font-size:30px;
+}
+ul.battle_list li .entry:nth-child(2){
+    text-align:right;
+}
+ul.battle_list li .time{
+    float:left;
+    font-size:11px;
+    color:rgb(100,100,100);
+}
+ul.battle_list li .battle{
+    float:right;
+    margin:0px;
+}

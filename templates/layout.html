@@ -1,0 +1,104 @@
+<!doctype html> 
+<html lang="en"> 
+    <head>
+        <title>COMSC Robot</title>
+        <meta name="viewport" content="width=500, user-scalable=0">
+        <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+        <link href="/static/css/main.css" type="text/css" rel="stylesheet" /> 
+        <style>
+            @media (max-width: 800px),handheld{
+                div.half{
+                    display:block;
+                    width:96%;
+                }
+                #map{
+                    width:96%;
+                }
+                input{
+                    display:block;
+                    padding-top:10px;
+                    padding-bottom:10px;
+                    width:350px;
+                }
+                button{
+                    display:block;
+                    width:100%;
+                }
+                button.test{
+                    display:block;
+                    width:100%;
+                }
+                button.source{
+                    display:block;
+                    width:100%;
+                }   
+                button.add{
+                    width:100%;
+                    padding-top:10px;
+                    padding-bottom:10px;
+                }
+                button.battle{
+                    width:100%;
+                    padding-top:10px;
+                    padding-bottom:10px;
+                    margin-left:0px;
+                }
+                ul.robot_list li .battle{
+                    position:relative;
+                    top:0px;right:0px;
+                }
+            }
+        </style>    
+    </head>
+    <body>
+        <div id="loading"></div>
+        <header>
+            <div id="logo"></div>
+            <div id="cs_text">Cardiff School of<br /><span>Computer Science &amp; Informatics</span><br /><br /><span class="robotathon">visit day robotathon</span></div>
+            <div class="clear"></div>
+        </header>
+            {% if user != None %}
+                <nav style="float:right">
+                    <a class="dashboard" href="/"></a>
+                    <a class="battle" href="/battles"></a>
+                </nav>
+            {% endif %}
+        {% block body %}
+        {% endblock %}
+    </body>
+    
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.ui.widget.js"></script>
+    <script src="/static/js/jquery.fileupload.js"></script>
+    <script>
+        function show_loading(){
+            $("#loading").stop().fadeIn();
+        }
+        function hide_loading(){
+            $("#loading").stop().fadeOut();
+        }
+        $(document).ready(function(){
+            $(".time").each(function(){
+                var d = new Date ($(this).html()*1000);
+                var day = d.getDate();
+                var month = d.getMonth()+1;
+                var year = d.getFullYear();
+                var seconds = d.getSeconds();
+                var minutes = d.getMinutes();
+                var hours = d.getHours();
+                if(hours < 10){hours = "0"+hours;}
+                if(minutes < 10){minutes = "0"+minutes;}
+                if(seconds < 10){seconds = "0"+seconds;}
+                $(this).html(day+"/"+month+"/"+year+" "+hours+":"+minutes+":"+seconds);
+            });
+            $(".battle").click(function(){
+                show_loading();
+            });
+            $(".test").click(function(){
+                show_loading();
+            });
+        });
+    </script>
+    {% block scripts %}
+    {% endblock %}
+</html>

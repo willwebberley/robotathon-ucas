@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h1>Battle status</h1>
+<section>
+    <div class="half">
+        <h2 class="battle">Recent battles</h2>
+        {% if battle_count == 0 %}
+            <p class="info">No battles have yet taken place.</p>
+        {% else %}
+            <ul class="battle_list">
+                {% for battle in battles %}
+                    <li>
+                        <div class="entry">
+                            <p class="name">{{ battle['robot1_name'] }}</p>
+                            <p class="score">{{ battle['score1'] }}</p>
+                        </div>
+                        <div class="entry">
+                            <p class="name">{{ battle['robot2_name'] }}</p>
+                            <p class="score">{{ battle['score2'] }}</p>
+                        </div>
+                        <div class="clear"></div>
+                        <button class="battle" onclick="window.location='/replay?id={{battle['battle_id']}}';">View replay</button>
+                        <div class="time">{{ battle['timestamp'] }}</div>
+                        <div class="clear"></div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %} 
+    </div> 
+    <div class="half">
+        <h2 class="leaderboard">Top-4 leaderboard</h2>
+        {% if battle_count == 0 %}
+            <p class="info">No battles have yet taken place.</p>
+        {% else %}
+            <ul class="robot_list">
+            {% for robot in leaderboard %}
+                <li> 
+                    <p class="title">{{ robot['robot_name'] }}</p>
+                    <p class="score">{{ robot['score'] }} </p>
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="clear"></div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+</script>
+{% endblock %}
+

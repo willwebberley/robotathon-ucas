@@ -11,7 +11,8 @@ from flask import Flask, render_template, request, redirect, Response, url_for, 
 import time, os, uuid, json, base64, hmac, urllib, random, db_manager, api
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('ROBOT_SALT')
+#app.secret_key = os.environ.get('ROBOT_SALT')
+app.secret_key = "sdfdsf"
 
 
 ALLOWED_EXTENSIONS = set(['py'])
@@ -48,6 +49,26 @@ def upload_robot():
         robot_name = file.filename.rsplit(".",1)[0]
         filename = user+"_"+str(uuid.uuid4())+".py"
         file.save('./robots/'+filename)
+        
+        saved_file = open('./robots/'+filename, "r")
+        source = saved_file.read()
+        saved_file.close()
+        source = "from rgkit import rg\nfrom rgkit import comsc_bot\n"+source
+        source = source.replace("class Robot:", "class Robot(comsc_bot.ComscBot):")
+        source = source.replace("self.move(", "return super(Robot, self).move(")
+        source = source.replace("self.move_towards(", "return super(Robot, self).move_towards(rg, ")
+        source = source.replace("game.center_location", "rg.CENTER_POINT")
+        source = source.replace("game.get_distance(", "rg.dist(")
+        source = source.replace("game.get_walking_distance(", "rg.wdist(")
+        source = source.replace("self.attack(", "return super(Robot, self).attack(")
+        source = source.replace("self.attack_location(", "return super(Robot, self).attack_location(")
+        source = source.replace("self.guard(", "return super(Robot, self).guard(")
+        source = source.replace("self.self_destruct(", "return super(Robot, self).self_destruct(")
+        saved_file = open('./robots/'+filename, "w")
+        saved_file.write(source)
+        saved_file.close()
+        print source
+        
         result = api.create_robot(user, robot_name, filename)
         return json.dumps(result)
     else:

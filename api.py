@@ -72,7 +72,6 @@ def run_battle(robot1, robot2):
         map_file = open(options.map_filepath, 'r')
         map = map_file.read()
         map_file.close()    
-
         for item in history:
             for item2 in item:
                 item2['location'] = [item2['location'][0],item2['location'][1]]

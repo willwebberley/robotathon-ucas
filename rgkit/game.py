@@ -1,6 +1,7 @@
 import imp
 import os
 import random
+import copy
 import sys
 import traceback
 try:
@@ -53,9 +54,14 @@ class Player(object):
             self._robot.hp = robot.hp
             self._robot.player_id = robot.player_id
             self._robot.robot_id = robot.robot_id
-            action = self._robot.act(game_info)
-
-            if not game_state.is_valid_action(robot.location, action):
+            game_info_temp = copy.copy(game_info)
+            game_info_temp.robots = []
+            for robot in game_info.robots:
+                game_info_temp.robots.append(game_info.robots[robot])
+            
+            action = self._robot.act(game_info_temp)
+            
+            if not game_state.is_valid_action(self._robot.location, action):
                 raise Exception(
                     'Bot {0}: {1} is not a valid action from {2}'.format(
                         robot.robot_id + 1, action, robot.location)

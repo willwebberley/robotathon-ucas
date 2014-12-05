@@ -71,8 +71,15 @@
 <script>
 {% autoescape false %}
 var map_data = {{ result['map'] }};
-var history = {{ result['history'] }};
+var history_temp = {{ result['history'] }};
 {% endautoescape %}
+
+var history_arr = [];
+for(var i = 0; i < history_temp.length; i++){
+    history_arr.push(history_temp[i]);
+}
+
+console.log(history_arr);
 
 var playing = false;
 var move = 0;
@@ -80,6 +87,7 @@ var move = 0;
     $(document).ready(function(){
         create_map();
         $("#map").css({'height':$("#map").width()});
+        $("#play_pause").trigger('click');
     });
     $(window).resize(function(){
         $("#map").css({'height':$("#map").width()});
@@ -152,8 +160,7 @@ var move = 0;
     function show_move(move){
         var map = $("#map");
         var tile_size = 5;
-        
-        var move_data = history[move];
+        var move_data = history_arr[move];
         $("#map .robot").remove();
         for(var i = 0; i < move_data.length; i++){
             var robot = move_data[i]; 

@@ -56,14 +56,17 @@ def upload_robot():
         source = "from rgkit import rg\nfrom rgkit import comsc_bot\n"+source
         source = source.replace("class Robot:", "class Robot(comsc_bot.ComscBot):")
         source = source.replace("self.move(", "return super(Robot, self).move(")
+        source = source.replace("self.move_to_location(", "return super(Robot, self).move_to_location(")
         source = source.replace("self.move_towards(", "return super(Robot, self).move_towards(rg, ")
-        source = source.replace("game.center_location", "rg.CENTER_POINT")
-        source = source.replace("game.get_distance(", "rg.dist(")
-        source = source.replace("game.get_walking_distance(", "rg.wdist(")
         source = source.replace("self.attack(", "return super(Robot, self).attack(")
         source = source.replace("self.attack_location(", "return super(Robot, self).attack_location(")
         source = source.replace("self.guard(", "return super(Robot, self).guard(")
         source = source.replace("self.self_destruct(", "return super(Robot, self).self_destruct(")
+        source = source.replace("game.center_location", "rg.CENTER_POINT")
+        source = source.replace("game.get_distance(", "rg.dist(")
+        source = source.replace("game.get_walking_distance(", "rg.wdist(")
+        source = source.replace("game.get_location_types(", "rg.loc_types(")
+        source = source.replace("game.get_surrounding_locations(", "rg.locs_around(")
         saved_file = open('./robots/'+filename, "w")
         saved_file.write(source)
         saved_file.close()
@@ -127,7 +130,7 @@ def clear_all():
 # Main code
 if __name__ == '__main__':
     db_manager.initalise()
-    app.debug = True
-    port = int(os.environ.get('PORT', 8080))
+    app.debug = False
+    port = int(os.environ.get('PORT', 8088))
     app.run(host='0.0.0.0', port=port)
     

@@ -16,10 +16,13 @@ class ComscBot(object):
             return ['move', (self.location[0]+1, self.location[1])]
         else:
             raise Exception("Invalid move")
+        
+    def move_to_location(self, location):
+        return ['move', location]
             
     def move_towards(self, rg, point):
         return ['move', rg.toward(self.location, point)]
-            
+                
     def attack(self, direction):
         if direction == "up":
             return ['attack', (self.location[0], self.location[1]-1)]

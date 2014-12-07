@@ -3,3 +3,7 @@
 *.swp
 *.db
 temp/
+robots/*
+
+# venv
+robotathon/

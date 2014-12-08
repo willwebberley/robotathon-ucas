@@ -5,6 +5,7 @@
 <section>
     <div class="half">
         <h2>Create robot</h2>
+        <div id="create_robot_error_area"></div>
         <p>Choose a robot Python file to upload.</p>
         <p class="info">The name of your robot will be the same as the filename. For example, the file 'fred.py' will produce a robot called 'fred'. Robot names need to be unique.</p>
         <button id="new_robot" class="add">Add robot</button>
@@ -61,12 +62,41 @@
     </div>
     
     <div class="clear"></div>
- 
+</section>
 {% endblock %}
 {% block scripts %}
 <script>
     var robot_ids = [{% for robot in others %}'{{ robot['robot_id'] }}',{% endfor %}];
     var robot_names = [{% for robot in others %}'{{ robot['robot_name'] }}',{% endfor %}];
+
+    var error_no = 1;
+
+    /*
+     * Gets an element used to represent an error
+     */
+    function get_error_element(error_message) {
+        error_no++;
+        return $("<p>").addClass("error").text(error_message).attr("id", "error-" + error_no);
+    }
+
+    function hide_error_message(message_id) {
+        $("#" + message_id).fadeOut();
+    }
+
+    /*
+     * Handles data received from the upload API
+     */
+    var $robotCreateErrorArea = $("#create_robot_error_area");
+    function handle_upload_result(data) {
+        if (data.result.error === true) {
+            console.error(data.result.message);
+            var error_message = get_error_element(data.result.message);
+            $robotCreateErrorArea.after(error_message);
+            setTimeout(hide_error_message, 3000, error_message.attr("id"));
+        } else {
+            window.location.reload();
+        }
+    }
 
     /* 
      * Handle file upload 
@@ -80,7 +110,7 @@
         url: '/upload_robot',
         dataType: 'json',
         done: function (e, data) {
-            window.location = "/";
+            handle_upload_result(data);
         },
         progressall: function (e, data) {
         }
@@ -91,7 +121,8 @@
      *
     */
     var found = false;
-    $("#robot_list li").each(function(){
+    var $robotList = $("#robot_list li");
+    $robotList.each(function(){
         if($(this).attr("data-status") == 1){
             if(found == false){
                 $(this).addClass("selected");
@@ -99,14 +130,15 @@
             }
         }    
     });
+    var $robotName = $("#robot_name");
     if(found == false){
         $("#robot_error").removeClass("hidden");
         $(".battle").addClass("hidden");
-        $("#robot_name").addClass("hidden");
+        $robotName.addClass("hidden");
     }    
-    $("#robot_list li").click(function(){
+    $robotList.click(function(){
         if($(this).attr("data-status") == 1){
-            $("#robot_list li").removeClass("selected");
+            $robotList.removeClass("selected");
             $(this).addClass("selected");
         }
     });
@@ -115,7 +147,7 @@
      * Handle searching for robots
      *
     */
-    $("#robot_name").keyup(function(){
+    $robotName.keyup(function(){
         var term = $(this).val().toLowerCase();
         var list = $("#search_result");
         list.html('');
@@ -141,7 +173,7 @@
             event.stopImmediatePropagation();
             var selected_id = null;
             var this_id = $(this).attr("data-id");
-            $("#robot_list li").each(function(){
+            $robotList.each(function(){
                 if($(this).hasClass("selected")){
                     selected_id = $(this).attr("data-id");
                 }

@@ -462,3 +462,46 @@ ul.battle_list li .battle{
     float:right;
     margin:0px;
 }
+
+@media (max-width: 800px),handheld{
+    div.half{
+        display:block;
+        width:96%;
+    }
+    #map{
+        width:96%;
+    }
+    input{
+        display:block;
+        padding-top:10px;
+        padding-bottom:10px;
+        width:350px;
+    }
+    button{
+        display:block;
+        width:100%;
+    }
+    button.test{
+        display:block;
+        width:100%;
+    }
+    button.source{
+        display:block;
+        width:100%;
+    }
+    button.add{
+        width:100%;
+        padding-top:10px;
+        padding-bottom:10px;
+    }
+    button.battle{
+        width:100%;
+        padding-top:10px;
+        padding-bottom:10px;
+        margin-left:0px;
+    }
+    ul.robot_list li .battle{
+        position:relative;
+        top:0px;right:0px;
+    }
+}

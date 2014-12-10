@@ -1,4 +1,5 @@
 ####
+# Copyright 2014 Cardiff University
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -11,9 +12,7 @@ from flask import Flask, render_template, request, redirect, Response, url_for, 
 import time, os, uuid, json, base64, hmac, urllib, random, db_manager, api
 
 app = Flask(__name__)
-#app.secret_key = os.environ.get('ROBOT_SALT')
-app.secret_key = "sdfdsf"
-
+app.secret_key = "This should probably be set to something more secure and less visible."
 
 ALLOWED_EXTENSIONS = set(['py'])
 
@@ -70,7 +69,6 @@ def upload_robot():
         saved_file = open('./robots/'+filename, "w")
         saved_file.write(source)
         saved_file.close()
-        print source
         
         result = api.create_robot(user, robot_name, filename)
         return json.dumps(result)

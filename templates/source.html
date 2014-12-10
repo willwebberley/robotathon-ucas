@@ -9,13 +9,13 @@
                 <p class="title">{{ robot['robot_name'] }}</p>
                 {% if robot['status'] == 0 %}
                     <p class="status untested">Not yet tested</p>
-                    <p class="info">Robots need to be tested to ensure that they will     not cause errors when in battles.</p>
+                    <p class="info">Robots need to be tested to ensure that they will not cause errors when in battles.</p>
                 {% elif robot['status'] == 1 %}
                     <p class="status passed">Test passed</p>
                 {% elif robot['status'] == -1 %}
                     <p class="status failed">Test failed: invalid robot</p>
                 {% endif %}
-                <button onclick="window.location='/delete_robot?id={{ robot['robot_id    '] }}';" class="delete">delete</button>
+                <button onclick="window.location='/delete_robot?id={{ robot['robot_id'] }}';" class="delete">delete</button>
                 <button onclick="window.location='/test?id={{ robot['robot_id'] }}';"     class="test">test</button>
 
             </li>

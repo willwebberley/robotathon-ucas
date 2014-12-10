@@ -127,10 +127,10 @@ def clear_all():
     db_manager.clear_sources()
     return "Database cleared. <a href='/'>Return home</a>.";
 
+db_manager.initalise()
 # Main code
 if __name__ == '__main__':
-    db_manager.initalise()
-    app.debug = False
+    app.debug = True
     port = int(os.environ.get('PORT', 8088))
     app.run(host='0.0.0.0', port=port)
     

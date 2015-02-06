@@ -11,7 +11,7 @@ To delete the app data ready for a new visit day, then make a `GET` request (usi
 
 ## Installation and running guide 
 
-### Installation on managed School machine
+### Installation on managed School machines
 The School's system managers have information required to install the app on locally-managed machines. Below is a quick setup guide for this (assuming Mint/Ubuntu) on host `openday.cs.cf.ac.uk`:
 
 Install system dependencies:
@@ -69,7 +69,7 @@ The app is now available at [ucas.openday.cs.cf.ac.uk](http://ucas.openday.cs.cf
 
 
 ### General installation
-Follow these instructions for ad-hoc installation of the app.
+Follow these instructions for ad-hoc installations of the app.
 
 This guide assumes you have pip installed. On Ubuntu (and probably other Debian-based distros) you can use apt-get
 to install this:

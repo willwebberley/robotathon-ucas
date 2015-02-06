@@ -5,31 +5,71 @@ A webapp used as a small introduction to basic Python programming for visiting a
 
 The app is based around the Python [robot game](https://robotgame.net), and includes a modified version of the game's `rgkit` module.
 
-## Running the app
-Install the app and dependencies as described further below. 
-
-
-### Recommended: If using UWSGI and a webserver (e.g. Nginx)
-Start the app by running the included file:
-```
-$ ./start.sh
-```
-
-This will create any required directories and get things ready. You may find it useful to run this script inside of something like `tmux` or `screen` for easy management.
-
-### Otherwise
-Start the app by running the application directly and create required directorie(s):
-```
-$ mkdir robots
-$ python application.py
-```
-
 ## Resetting the app
 To delete the app data ready for a new visit day, then make a `GET` request (using your browser or otherwise) to `/delete_all_data`.
 
 
-## Installation guide 
-The School's system managers have information required to install the app on locally-managed machines. For other installations, you may like to follow the guide below.
+## Installation and running guide 
+
+### Installation on managed School machine
+The School's system managers have information required to install the app on locally-managed machines. Below is a quick setup guide for this (assuming Mint/Ubuntu) on host `openday.cs.cf.ac.uk`:
+
+Install system dependencies:
+```
+# apt-get install nginx python-pip python-dev tmux
+```
+
+Install Python dependencies:
+```
+# pip install flask elo uwsgi
+```
+
+Create a user (if you need one) that can run the apps:
+```
+# useradd apps 
+# mkdir /home/apps 
+# chown apps /home/apps
+```
+
+Download the app (as user `apps`):
+```
+$ cd ~
+$ git clone https://github.com/flyingsparx/robotathon-ucas.git
+```
+
+Configure the webserver by adding the server block below to `/etc/nginx/nginx.conf`:
+```
+server{
+        listen 80;
+        server_name ucas.openday.cs.cf.ac.uk;
+        location /static {
+                root /home/apps/robotathon-ucas;
+        }
+        location / {
+                uwsgi_pass 127.0.0.1:8188;
+                include /etc/nginx/uwsgi_params;
+        }
+}
+```
+
+Start the webserver:
+```
+# service nginx start
+```
+
+Run the app (as user `apps`):
+```
+$ cd ~/robotathon-ucas
+$ ./start.sh
+```
+
+You may prefer to run `start.sh` inside a multiplexer (such as the installed `tmux`) for manageability.
+
+The app is now available at [ucas.openday.cs.cf.ac.uk](http://ucas.openday.cs.cf.ac.uk).
+
+
+### General installation
+Follow these instructions for ad-hoc installation of the app.
 
 This guide assumes you have pip installed. On Ubuntu (and probably other Debian-based distros) you can use apt-get
 to install this:
